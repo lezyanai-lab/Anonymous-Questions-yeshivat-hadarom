@@ -1,1 +1,0 @@
-export default function RabbiRoute({children}) { return children; }
