@@ -1,0 +1,1 @@
+export default function GoogleIcon() { return <svg></svg>; }

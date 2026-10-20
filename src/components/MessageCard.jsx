@@ -1,0 +1,1 @@
+export default function MessageCard() { return <div>הודעה</div>; }

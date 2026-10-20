@@ -1,0 +1,1 @@
+export default function UserAccessScreen() { return <div>גישה</div>; }

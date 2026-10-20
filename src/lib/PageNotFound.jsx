@@ -1,0 +1,1 @@
+export default function PageNotFound() { return <div className="p-8 text-center">404 - הדף לא נמצא</div>; }

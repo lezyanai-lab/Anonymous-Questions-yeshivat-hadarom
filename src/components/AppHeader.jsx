@@ -1,0 +1,1 @@
+export default function AppHeader() { return <header>ישיבת הדרום</header>; }
