@@ -1,0 +1,29 @@
+{
+  "name": "Settings",
+  "type": "object",
+  "properties": {
+    "owner_email": {
+      "type": "string",
+      "description": "כתובת המייל של המנהל הראשי (בעל האפליקציה) — היחיד שיכול לאשר ולבטל מנהלים"
+    }
+  },
+  "required": [
+    "owner_email"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "data.owner_email": "{{user.id}}"
+    },
+    "update": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "delete": {
+      "data.owner_email": "{{user.email}}"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "properties": {
+    "role": {
+      "type": "string",
+      "description": "The role of the user in the app",
+      "enum": [
+        "admin",
+        "rabbi",
+        "user"
+      ],
+      "rls": {
+        "update": {
+          "user_condition": {
+            "data.is_owner": true
+          }
+        }
+      }
+    },
+    "is_owner": {
+      "type": "boolean",
+      "description": "מסומן true רק עבור בעל האפליקציה (המנהל הראשי). נקבע בצד השרת בלבד ואינו ניתן לשינוי על ידי משתמשים.",
+      "rls": {
+        "update": {
+          "user_condition": {
+            "data.is_owner": true
+          }
+        }
+      }
+    },
+    "display_name": {
+      "type": "string",
+      "description": "השם שהמשתמש הזין לאחר ההתחברות — נפרד מזהות חשבון ה-Google",
+      "rls": {
+        "update": {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "role"
+  ],
+  "name": "User",
+  "type": "object"
+}

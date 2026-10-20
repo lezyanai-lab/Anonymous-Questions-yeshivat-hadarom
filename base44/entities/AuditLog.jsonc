@@ -1,0 +1,59 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "approve_rabbi",
+        "reject_rabbi",
+        "revoke_rabbi",
+        "reactivate_rabbi",
+        "link_rabbi",
+        "approve_admin",
+        "reject_admin",
+        "revoke_admin"
+      ],
+      "description": "סוג הפעולה"
+    },
+    "target_email": {
+      "type": "string",
+      "description": "כתובת המייל של המשתמש שעליו בוצעה הפעולה"
+    },
+    "performed_by_email": {
+      "type": "string",
+      "description": "כתובת המייל של המנהל שביצע את הפעולה"
+    },
+    "details": {
+      "type": "string",
+      "description": "תיאור קצר של הפעולה"
+    }
+  },
+  "required": [
+    "action",
+    "target_email",
+    "performed_by_email"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

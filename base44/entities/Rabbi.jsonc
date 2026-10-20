@@ -1,0 +1,72 @@
+{
+  "name": "Rabbi",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "השם המוצג לתלמידים"
+    },
+    "description": {
+      "type": "string",
+      "description": "תיאור קצר המוצג לתלמידים"
+    },
+    "email": {
+      "type": "string",
+      "description": "כתובת המייל של הרב — משמשת להרשאות ולזיהוי",
+      "rls": {
+        "read": {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      }
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "האם הרב מוצג לתלמידים לשליחת הודעות חדשות"
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "revoked"
+      ],
+      "default": "pending",
+      "description": "סטטוס אישור הרב — קובע הרשאת גישה"
+    },
+    "approved_by_email": {
+      "type": "string",
+      "description": "כתובת המנהל שאישר את הרב"
+    },
+    "approved_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "מועד האישור"
+    }
+  },
+  "required": [
+    "display_name",
+    "email"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

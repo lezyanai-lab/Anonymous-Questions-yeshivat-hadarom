@@ -1,0 +1,83 @@
+{
+  "name": "AccessRequest",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "מזהה המשתמש בפלטפורמה"
+    },
+    "google_email": {
+      "type": "string",
+      "description": "כתובת חשבון Google המאומת"
+    },
+    "entered_name": {
+      "type": "string",
+      "description": "השם שהמשתמש הזין ידנית"
+    },
+    "request_type": {
+      "type": "string",
+      "enum": [
+        "rabbi",
+        "admin"
+      ],
+      "description": "סוג הבקשה — גישת רב או גישת מנהל"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "revoked"
+      ],
+      "default": "pending",
+      "description": "סטטוס הבקשה"
+    },
+    "linked_rabbi_id": {
+      "type": "string",
+      "description": "הרב שאליו קושר החשבון (לבקשות רב בלבד)"
+    },
+    "decided_by_email": {
+      "type": "string",
+      "description": "כתובת המייל של המנהל שטיפל בבקשה"
+    },
+    "decided_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "מועד הטיפול בבקשה"
+    }
+  },
+  "required": [
+    "user_id",
+    "google_email",
+    "entered_name",
+    "request_type"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

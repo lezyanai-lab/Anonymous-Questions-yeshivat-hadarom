@@ -1,0 +1,86 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "assigned_to_email": {
+      "type": "string",
+      "description": "כתובת המייל של הרב המטפל הנוכחי"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "שאלה תורנית",
+        "עניין אישי",
+        "בעיה חברתית",
+        "דיווח חשוב",
+        "אחר"
+      ],
+      "description": "קטגוריית הפנייה"
+    },
+    "content": {
+      "type": "string",
+      "description": "תוכן ההודעה"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "חדשה",
+        "בטיפול",
+        "הועברה",
+        "טופלה"
+      ],
+      "default": "חדשה",
+      "description": "סטטוס הטיפול"
+    },
+    "forwarded_from_email": {
+      "type": "string",
+      "description": "כתובת המייל של הרב שהעביר את ההודעה, אם הועברה"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "האם הרב כבר פתח/קרא את ההודעה"
+    }
+  },
+  "required": [
+    "assigned_to_email",
+    "category",
+    "content"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.assigned_to_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "data.assigned_to_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
