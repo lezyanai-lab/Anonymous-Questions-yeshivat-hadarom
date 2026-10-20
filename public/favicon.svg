@@ -1,1 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#25405f"/><text x="32" y="43" font-family="Heebo,Arial,sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#fbf9f4">יה</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f5580"/><stop offset="1" stop-color="#1a3250"/></linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#e3a63a"/></radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g transform="translate(0,-34)">
+    <g stroke="#f0c25a" stroke-width="13" stroke-linecap="round">
+      <line x1="176.0" y1="250.0" x2="150.0" y2="250.0"/>
+      <line x1="182.1" y1="219.4" x2="158.1" y2="209.4"/>
+      <line x1="199.4" y1="193.4" x2="181.0" y2="175.0"/>
+      <line x1="225.4" y1="176.1" x2="215.4" y2="152.1"/>
+      <line x1="256.0" y1="170.0" x2="256.0" y2="144.0"/>
+      <line x1="286.6" y1="176.1" x2="296.6" y2="152.1"/>
+      <line x1="312.6" y1="193.4" x2="331.0" y2="175.0"/>
+      <line x1="329.9" y1="219.4" x2="353.9" y2="209.4"/>
+      <line x1="336.0" y1="250.0" x2="362.0" y2="250.0"/>
+    </g>
+    <circle cx="256" cy="250" r="60" fill="url(#sun)"/>
+    <!-- cover edge -->
+    <path d="M80 396 C148 380 214 390 256 426 C298 390 364 380 432 396 L432 416 C364 400 298 410 256 446 C214 410 148 400 80 416 Z" fill="#c8923a"/>
+    <!-- pages -->
+    <path d="M256 304 C214 272 148 264 90 284 L90 400 C148 382 214 390 256 424 Z" fill="#fbf6ea"/>
+    <path d="M256 304 C298 272 364 264 422 284 L422 400 C364 382 298 390 256 424 Z" fill="#f3ead4"/>
+    <path d="M256 304 L256 424" stroke="#c8923a" stroke-width="5" stroke-linecap="round"/>
+    <g stroke="#25405f" stroke-opacity=".28" stroke-width="6" stroke-linecap="round" fill="none">
+      <path d="M118 316 C158 308 200 314 234 334"/>
+      <path d="M118 342 C158 334 200 340 234 360"/>
+      <path d="M118 368 C158 360 200 366 234 386"/>
+      <path d="M394 316 C354 308 312 314 278 334"/>
+      <path d="M394 342 C354 334 312 340 278 360"/>
+      <path d="M394 368 C354 360 312 366 278 386"/>
+    </g>
+  </g>
+</svg>

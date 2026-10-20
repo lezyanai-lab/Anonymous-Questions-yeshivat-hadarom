@@ -41,9 +41,7 @@ export default function UserAccessScreen({ data, onRefresh, onLogout }) {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/40 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">יה</span>
-          </div>
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="w-16 h-16 rounded-2xl mb-4 mx-auto" />
           <h1 className="text-2xl font-bold text-foreground mb-1">ישיבת הדרום</h1>
         </div>
 

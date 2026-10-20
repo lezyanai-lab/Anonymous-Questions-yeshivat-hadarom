@@ -14,9 +14,7 @@ export default function AppHeader({ title, subtitle, icon: Icon }) {
     <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-md border-b border-border">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0">
-            <span className="text-primary-foreground font-bold text-base">יה</span>
-          </div>
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="w-10 h-10 rounded-xl shrink-0" />
           <div className="min-w-0">
             <h1 className="text-lg font-bold text-foreground truncate">{title}</h1>
             <p className="text-xs text-muted-foreground truncate">{subtitle ? `${subtitle} · ישיבת הדרום` : "ישיבת הדרום"}</p>

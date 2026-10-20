@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import InstallButton from "@/components/InstallButton";
 
 const CATEGORIES = [
 { value: "שאלה תורנית", label: "שאלה תורנית" },
@@ -70,9 +71,7 @@ export default function StudentHome() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          
-
-          
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="לוגו ישיבת הדרום" className="w-20 h-20 mx-auto mb-4 rounded-2xl shadow-sm" />
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">ישיבת הדרום</h1>
           <p className="text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
             פנייה אנונימית לרבני הישיבה באופן פרטי ומאובטח
@@ -224,6 +223,7 @@ export default function StudentHome() {
               כניסת מנהלים
             </Button>
           </Link>
+          <InstallButton />
         </div>
       </div>
     </div>);
