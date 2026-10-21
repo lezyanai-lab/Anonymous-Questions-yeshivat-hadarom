@@ -4,7 +4,6 @@ import { base44 } from "@/api/base44Client";
 import { useAuth } from "@/lib/AuthContext";
 import AppHeader from "@/components/AppHeader";
 import PendingRequests from "@/components/admin/PendingRequests";
-import TransferOwnership from "@/components/admin/TransferOwnership";
 import RabbisManagement from "@/components/admin/RabbisManagement";
 import MessagesTab from "@/components/admin/MessagesTab";
 import AuditTab from "@/components/admin/AuditTab";
@@ -59,7 +58,6 @@ export default function AdminDashboard() {
         {tab === "rabbis" && <RabbisManagement onChanged={refresh} />}
         {tab === "messages" && <MessagesTab onChanged={refresh} />}
         {tab === "audit" && <AuditTab />}
-        {isMainAdmin && <TransferOwnership />}
       </div>
     </div>
   );

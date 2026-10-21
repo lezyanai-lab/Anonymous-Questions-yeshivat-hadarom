@@ -174,7 +174,6 @@ const FUNCTIONS = {
   manageRabbi: 'yd_manage_rabbi',
   manageAdmin: 'yd_manage_admin',
   forwardMessage: 'yd_forward_message',
-  transferOwnership: 'yd_transfer_ownership',
 };
 
 // ---------- auth ----------
@@ -192,7 +191,7 @@ export const base44 = {
       if (!rpc) throw new Error(`Unknown function ${name}`);
       const { data, error } = await supabase.rpc(rpc, { payload });
       if (error) fail(error);
-      if (['requestRabbiAccess', 'manageAdmin', 'transferOwnership'].includes(name)) invalidateProfile();
+      if (['requestRabbiAccess', 'manageAdmin'].includes(name)) invalidateProfile();
       return { data };
     },
   },
