@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Send, CheckCircle2, Shield, Loader2, Lock, LogIn, ShieldCheck } from "lucide-react";
+import { Send, CheckCircle2, Shield, Loader2, Lock, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -215,12 +215,6 @@ export default function StudentHome() {
             <Button variant="outline" className="w-full h-11 text-sm">
               <LogIn className="w-4 h-4 ml-2" />
               כניסת רבנים
-            </Button>
-          </Link>
-          <Link to="/login" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full h-11 text-sm">
-              <ShieldCheck className="w-4 h-4 ml-2" />
-              כניסת מנהלים
             </Button>
           </Link>
           <InstallButton />

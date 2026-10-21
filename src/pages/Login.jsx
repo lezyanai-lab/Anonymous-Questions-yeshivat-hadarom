@@ -27,7 +27,7 @@ export default function Login() {
     <AuthLayout
       icon={BookOpen}
       title="ישיבת הדרום"
-      subtitle="כניסת רבנים ומנהלים"
+      subtitle="כניסת רבנים"
       footer={
         <Link to="/" className="text-primary font-medium hover:underline">
           חזרה למסך התלמידים

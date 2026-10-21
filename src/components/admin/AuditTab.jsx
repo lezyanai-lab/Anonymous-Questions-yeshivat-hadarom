@@ -8,6 +8,7 @@ const ACTION_LABELS = {
   revoke_rabbi: "ביטול הרשאת רב",
   reactivate_rabbi: "הפעלת רב מחדש",
   grant_admin: "הענקת מנהל",
+  transfer_ownership: "העברת הניהול הראשי",
   revoke_admin: "ביטול מנהל",
 };
 

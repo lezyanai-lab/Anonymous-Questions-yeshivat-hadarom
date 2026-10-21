@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
-import { Settings, Users, MessageSquare, UserCheck, Shield, ScrollText, ShieldCheck } from "lucide-react";
+import { Settings, Users, MessageSquare, UserCheck, ScrollText, ShieldCheck } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useAuth } from "@/lib/AuthContext";
 import AppHeader from "@/components/AppHeader";
 import PendingRequests from "@/components/admin/PendingRequests";
-import AdminRequests from "@/components/admin/AdminRequests";
+import TransferOwnership from "@/components/admin/TransferOwnership";
 import RabbisManagement from "@/components/admin/RabbisManagement";
 import MessagesTab from "@/components/admin/MessagesTab";
 import AuditTab from "@/components/admin/AuditTab";
 
 const TABS = [
   { key: "pending", label: "בקשות רבנים", icon: UserCheck },
-  { key: "admins", label: "בקשות מנהלים", icon: Shield },
   { key: "rabbis", label: "רבנים", icon: Users },
   { key: "messages", label: "הודעות", icon: MessageSquare },
   { key: "audit", label: "יומן אירועים", icon: ScrollText },
@@ -57,10 +56,10 @@ export default function AdminDashboard() {
           ))}
         </div>
         {tab === "pending" && <PendingRequests onChanged={refresh} />}
-        {tab === "admins" && <AdminRequests isMainAdmin={isMainAdmin} onChanged={refresh} />}
         {tab === "rabbis" && <RabbisManagement onChanged={refresh} />}
         {tab === "messages" && <MessagesTab onChanged={refresh} />}
         {tab === "audit" && <AuditTab />}
+        {isMainAdmin && <TransferOwnership />}
       </div>
     </div>
   );

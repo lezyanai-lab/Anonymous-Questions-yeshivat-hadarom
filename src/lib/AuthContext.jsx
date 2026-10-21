@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         setAppPublicSettings(publicSettings);
         
         // If we got the app public settings successfully, check if user is authenticated
-        if (appParams.token) {
+        if (await base44.auth.isAuthenticated()) {
           await checkUserAuth();
         } else {
           setIsLoadingAuth(false);

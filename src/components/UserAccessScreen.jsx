@@ -102,35 +102,6 @@ export default function UserAccessScreen({ data, onRefresh, onLogout }) {
                 )}
               </div>
 
-              {/* Admin access */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">גישת מנהל</h3>
-                </div>
-                {adminStatus === "pending" && (
-                  <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2.5">
-                    <Clock className="w-4 h-4 shrink-0" /> הבקשה ממתינה לאישור המנהל הראשי
-                  </div>
-                )}
-                {adminStatus === "rejected" && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2.5">
-                      <ShieldX className="w-4 h-4 shrink-0" /> הבקשה נדחתה. ניתן לשלוח בקשה חדשה.
-                    </div>
-                    <Button variant="outline" size="sm" disabled={requesting === "admin"} onClick={() => handleRequest("admin")} className="w-full h-10">
-                      {requesting === "admin" ? <Loader2 className="w-4 h-4 ml-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 ml-2" />}
-                      בקש גישת מנהל שוב
-                    </Button>
-                  </div>
-                )}
-                {!adminStatus && (
-                  <Button variant="outline" disabled={requesting === "admin"} onClick={() => handleRequest("admin")} className="w-full h-11">
-                    {requesting === "admin" ? <Loader2 className="w-4 h-4 ml-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 ml-2" />}
-                    בקש גישת מנהל
-                  </Button>
-                )}
-              </div>
             </>
           )}
         </div>
