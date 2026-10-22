@@ -91,6 +91,12 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           className="h-12"
         />
+        {mode === "register" && (
+          <p className="text-xs text-muted-foreground leading-relaxed rounded-lg bg-secondary/60 p-3">
+            כדאי להמציא סיסמה חדשה לאתר הזה, ולא להשתמש בסיסמה האמיתית שלך (של המייל, הבנק או אתרים אחרים).
+            אם הסיסמה תדלוף או תיחשף, מי שמצא אותה לא יוכל להיכנס לשאר החשבונות שלך. את הסיסמה כדאי לשמור במקום בטוח.
+          </p>
+        )}
         <Button
           type="submit"
           disabled={loading || !email.trim() || !password}
