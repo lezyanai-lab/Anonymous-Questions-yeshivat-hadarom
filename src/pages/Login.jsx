@@ -13,6 +13,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [mode, setMode] = useState("login");
 
   // משתמש שכבר מחובר — הפניה לאזור שלו
   if (authChecked && !isLoadingAuth && isAuthenticated && user) {
@@ -22,10 +24,12 @@ export default function Login() {
   const handleLogin = async (e) => {
     e?.preventDefault();
     if (!email.trim() || !password) return;
+    if (mode === "register" && name.trim().length < 2) { setError("נא להזין שם מלא"); return; }
     setError("");
     setLoading(true);
     try {
-      await base44.auth.loginWithPassword(email, password);
+      if (mode === "register") await base44.auth.register({ email, password, name: name.trim() });
+      else await base44.auth.loginWithPassword(email, password);
       window.location.href = `${import.meta.env.BASE_URL}rabbi`;
     } catch (err) {
       setError(err?.message || "הכניסה נכשלה, נא לנסות שוב");
@@ -46,7 +50,9 @@ export default function Login() {
     >
       <div className="text-center mb-6">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          הכניסה לרבנים בלבד, עם המייל והסיסמה שקיבלת מהמנהל.
+          {mode === "login"
+            ? "כניסה לרבנים עם המייל והסיסמה שלך."
+            : "רב חדש? נרשמים עם מייל וסיסמה לבחירתך. אחרי ההרשמה יש לבקש גישה, והמנהל יאשר."}
         </p>
       </div>
 
@@ -57,6 +63,16 @@ export default function Login() {
       )}
 
       <form onSubmit={handleLogin} className="space-y-3">
+        {mode === "register" && (
+          <Input
+            type="text"
+            autoComplete="name"
+            placeholder="שם מלא"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="h-12"
+          />
+        )}
         <Input
           type="email"
           dir="ltr"
@@ -69,8 +85,8 @@ export default function Login() {
         <Input
           type="password"
           dir="ltr"
-          autoComplete="current-password"
-          placeholder="סיסמה"
+          autoComplete={mode === "register" ? "new-password" : "current-password"}
+          placeholder={mode === "register" ? "סיסמה (לפחות 8 תווים)" : "סיסמה"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="h-12"
@@ -81,9 +97,17 @@ export default function Login() {
           className="w-full h-12 font-medium"
         >
           {loading ? <Loader2 className="w-4 h-4 ml-2 animate-spin" /> : <LogIn className="w-4 h-4 ml-2" />}
-          כניסה
+          {mode === "register" ? "הרשמה" : "כניסה"}
         </Button>
       </form>
+
+      <button
+        type="button"
+        onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
+        className="mt-4 w-full text-center text-sm text-primary font-medium hover:underline"
+      >
+        {mode === "login" ? "רב חדש? הרשמה" : "יש לי כבר חשבון — כניסה"}
+      </button>
 
       <div className="mt-6 space-y-3">
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">

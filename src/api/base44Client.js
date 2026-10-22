@@ -174,7 +174,7 @@ const FUNCTIONS = {
   manageRabbi: 'yd_manage_rabbi',
   manageAdmin: 'yd_manage_admin',
   forwardMessage: 'yd_forward_message',
-  createRabbiAccount: 'yd_create_rabbi_account',
+  register: 'yd_register',
 };
 
 // ---------- auth ----------
@@ -210,6 +210,13 @@ export const base44 = {
         options: { redirectTo: baseUrlPath(fromUrl) },
       });
       if (error) { console.error(error); throw error; }
+    },
+    async register({ email, password, name }) {
+      const { error } = await supabase.rpc('yd_register', {
+        payload: { email, password, display_name: name },
+      });
+      if (error) { const e = new Error(error.message); e.status = 400; throw e; }
+      await base44.auth.loginWithPassword(email, password);
     },
     async loginWithPassword(email, password) {
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
