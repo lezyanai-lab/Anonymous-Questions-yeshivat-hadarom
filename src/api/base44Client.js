@@ -174,6 +174,7 @@ const FUNCTIONS = {
   manageRabbi: 'yd_manage_rabbi',
   manageAdmin: 'yd_manage_admin',
   forwardMessage: 'yd_forward_message',
+  createRabbiAccount: 'yd_create_rabbi_account',
 };
 
 // ---------- auth ----------
@@ -209,6 +210,15 @@ export const base44 = {
         options: { redirectTo: baseUrlPath(fromUrl) },
       });
       if (error) { console.error(error); throw error; }
+    },
+    async loginWithPassword(email, password) {
+      const { error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
+      invalidateProfile();
+      if (error) {
+        const e = new Error(/invalid login credentials/i.test(error.message) ? 'המייל או הסיסמה שגויים' : error.message);
+        e.status = error.status;
+        throw e;
+      }
     },
     redirectToLogin() {
       window.location.href = `${import.meta.env.BASE_URL}login`;

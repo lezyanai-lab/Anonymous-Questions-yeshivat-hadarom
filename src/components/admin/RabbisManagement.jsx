@@ -30,7 +30,7 @@ export default function RabbisManagement({ onChanged }) {
   const [createOpen, setCreateOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [acting, setActing] = useState(null);
-  const [form, setForm] = useState({ display_name: "", description: "", email: "", active: true });
+  const [form, setForm] = useState({ display_name: "", description: "", email: "", password: "", active: true });
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
@@ -54,19 +54,20 @@ export default function RabbisManagement({ onChanged }) {
 
   const openCreate = () => {
     setEditing(null);
-    setForm({ display_name: "", description: "", email: "", active: true });
+    setForm({ display_name: "", description: "", email: "", password: "", active: true });
     setCreateOpen(true);
   };
 
   const openEdit = (rabbi) => {
     setEditing(rabbi);
-    setForm({ display_name: rabbi.display_name, description: rabbi.description || "", email: rabbi.email || "", active: rabbi.active });
+    setForm({ display_name: rabbi.display_name, description: rabbi.description || "", email: rabbi.email || "", password: "", active: rabbi.active });
     setCreateOpen(true);
   };
 
   const handleSave = async () => {
     if (!form.display_name.trim() || !form.email.trim()) { toast.error("נא למלא שם וכתובת מייל"); return; }
     if (!form.email.includes("@")) { toast.error("כתובת המייל אינה תקינה"); return; }
+    if (!editing && form.password.length < 8) { toast.error("הסיסמה חייבת להכיל לפחות 8 תווים"); return; }
     setSaving(true);
     try {
       const now = new Date().toISOString();
@@ -79,16 +80,17 @@ export default function RabbisManagement({ onChanged }) {
         });
         toast.success("הרב עודכן");
       } else {
-        await base44.entities.Rabbi.create({
+        await base44.functions.invoke("createRabbiAccount", {
           display_name: form.display_name.trim(),
           description: form.description.trim(),
           email: form.email.trim(),
-          active: form.active,
-          approval_status: "approved",
-          approved_by_email: user.email,
-          approved_date: now,
+          password: form.password,
         });
-        toast.success("הרב נוסף ואושר");
+        if (!form.active) {
+          const { items } = await base44.entities.Rabbi.filter({ email: form.email.trim().toLowerCase() }, { limit: 1 });
+          if (items?.[0]) await base44.entities.Rabbi.update(items[0].id, { active: false });
+        }
+        toast.success("הרב נוסף ואושר. אפשר למסור לו את המייל והסיסמה");
       }
       setCreateOpen(false);
       load();
@@ -191,10 +193,17 @@ export default function RabbisManagement({ onChanged }) {
               <Input value={form.display_name} onChange={(e) => setForm({ ...form, display_name: e.target.value })} className="h-12" placeholder="הרב..." />
             </div>
             <div className="space-y-2">
-              <Label>כתובת מייל (חשבון Google של הרב)</Label>
+              <Label>כתובת מייל של הרב</Label>
               <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-12" placeholder="rabbi@gmail.com" dir="ltr" />
-              <p className="text-xs text-muted-foreground">הרב יוכל להיכנס באמצעות חשבון Google זה</p>
+              <p className="text-xs text-muted-foreground">המייל ישמש לכניסה של הרב</p>
             </div>
+            {!editing && (
+              <div className="space-y-2">
+                <Label>סיסמה לרב (לפחות 8 תווים)</Label>
+                <Input type="text" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="h-12" dir="ltr" autoComplete="off" />
+                <p className="text-xs text-muted-foreground">את המייל והסיסמה צריך למסור לרב בעצמך</p>
+              </div>
+            )}
             <div className="space-y-2">
               <Label>תיאור קצר (לא חובה)</Label>
               <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} placeholder="לדוגמה: רב הישיבה, מומחה ל..." />

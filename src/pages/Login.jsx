@@ -4,23 +4,33 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Loader2, LogIn } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
-import GoogleIcon from "@/components/GoogleIcon";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/AuthContext";
 
 export default function Login() {
   const { isAuthenticated, authChecked, isLoadingAuth, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // משתמש שכבר מחובר — הפניה לאזור שלו
   if (authChecked && !isLoadingAuth && isAuthenticated && user) {
     return <Navigate to="/rabbi" replace />;
   }
 
-  const handleGoogle = () => {
+  const handleLogin = async (e) => {
+    e?.preventDefault();
+    if (!email.trim() || !password) return;
     setError("");
     setLoading(true);
-    base44.auth.loginWithProvider("google", `${import.meta.env.BASE_URL}rabbi`);
+    try {
+      await base44.auth.loginWithPassword(email, password);
+      window.location.href = `${import.meta.env.BASE_URL}rabbi`;
+    } catch (err) {
+      setError(err?.message || "הכניסה נכשלה, נא לנסות שוב");
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,8 +46,7 @@ export default function Login() {
     >
       <div className="text-center mb-6">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          כניסה למערכת ישיבת הדרום באמצעות חשבון Google בלבד.<br />
-          רב חדש יקבל סטטוס "ממתין לאישור" עד לאישור המנהל.
+          הכניסה לרבנים בלבד, עם המייל והסיסמה שקיבלת מהמנהל.
         </p>
       </div>
 
@@ -47,18 +56,34 @@ export default function Login() {
         </div>
       )}
 
-      <Button
-        onClick={handleGoogle}
-        disabled={loading}
-        className="w-full h-12 font-medium bg-white text-foreground border border-border hover:bg-secondary"
-      >
-        {loading ? (
-          <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-        ) : (
-          <GoogleIcon className="w-5 h-5 ml-2" />
-        )}
-        כניסה באמצעות Google
-      </Button>
+      <form onSubmit={handleLogin} className="space-y-3">
+        <Input
+          type="email"
+          dir="ltr"
+          autoComplete="username"
+          placeholder="מייל"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="h-12"
+        />
+        <Input
+          type="password"
+          dir="ltr"
+          autoComplete="current-password"
+          placeholder="סיסמה"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="h-12"
+        />
+        <Button
+          type="submit"
+          disabled={loading || !email.trim() || !password}
+          className="w-full h-12 font-medium"
+        >
+          {loading ? <Loader2 className="w-4 h-4 ml-2 animate-spin" /> : <LogIn className="w-4 h-4 ml-2" />}
+          כניסה
+        </Button>
+      </form>
 
       <div className="mt-6 space-y-3">
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
