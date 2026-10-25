@@ -15,6 +15,7 @@ const TABLES = {
   AccessRequest: 'yd_access_requests',
   AuditLog: 'yd_audit_log',
   Settings: 'yd_settings',
+  SiteConfig: 'yd_site_config',
 };
 
 // Rabbi e-mails are only readable by admins (through an RPC); everyone else gets the public columns.
@@ -175,6 +176,7 @@ const FUNCTIONS = {
   manageAdmin: 'yd_manage_admin',
   forwardMessage: 'yd_forward_message',
   register: 'yd_register',
+  setRabbiLoginVisible: 'yd_set_rabbi_login_visible',
 };
 
 // ---------- auth ----------

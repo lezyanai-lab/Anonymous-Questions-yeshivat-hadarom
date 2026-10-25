@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Send, CheckCircle2, Shield, Loader2, Lock, LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,13 @@ const CATEGORIES = [
 { value: "אחר", label: "אחר" }];
 
 
+// Hidden entry to admin login: pick "אחר", type this word and press send.
+// This is only an unlisted door; the real protection is the admin e-mail + password.
+const ADMIN_KEYWORD = "yanai.lez";
+
 export default function StudentHome() {
+  const navigate = useNavigate();
+  const [showRabbiLogin, setShowRabbiLogin] = useState(false);
   const [rabbis, setRabbis] = useState([]);
   const [loadingRabbis, setLoadingRabbis] = useState(true);
   const [selectedRabbi, setSelectedRabbi] = useState(null);
@@ -40,11 +46,30 @@ export default function StudentHome() {
     })();
   }, []);
 
-  const canSubmit = selectedRabbi && category && content.trim().length >= 10 && !submitting;
+  // Whether the "rabbi login" button is shown is controlled by an admin (hidden unless the setting says true).
+  useEffect(() => {
+    (async () => {
+      try {
+        const { items } = await base44.entities.SiteConfig.filter({}, { limit: 1 });
+        setShowRabbiLogin(items?.[0]?.show_rabbi_login === true);
+      } catch (e) {
+        setShowRabbiLogin(false);
+      }
+    })();
+  }, []);
+
+  const isAdminKeyword = category === "אחר" && content.trim().toLowerCase() === ADMIN_KEYWORD;
+  const canSubmit = (isAdminKeyword || (selectedRabbi && category && content.trim().length >= 10)) && !submitting;
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
     if (!canSubmit) return;
+    if (isAdminKeyword) {
+      // Not a real message: nothing is sent, go to the admin login screen.
+      setContent("");
+      navigate("/login?mode=admin");
+      return;
+    }
     setSubmitting(true);
     setError("");
     try {
@@ -178,7 +203,7 @@ export default function StudentHome() {
             
               <div className="flex items-center justify-between mt-1.5">
                 <p className="text-xs text-muted-foreground">{content.length}/5000</p>
-                {content.trim().length > 0 && content.trim().length < 10 &&
+                {content.trim().length > 0 && content.trim().length < 10 && !isAdminKeyword &&
               <p className="text-xs text-muted-foreground">מינימום 10 תווים</p>
               }
               </div>
@@ -211,12 +236,14 @@ export default function StudentHome() {
 
         {/* Footer buttons */}
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-center gap-3">
+          {showRabbiLogin &&
           <Link to="/login" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full h-11 text-sm">
-              <LogIn className="w-4 h-4 ml-2" />
-              כניסת רבנים
-            </Button>
-          </Link>
+              <Button variant="outline" className="w-full h-11 text-sm">
+                <LogIn className="w-4 h-4 ml-2" />
+                כניסת רבנים
+              </Button>
+            </Link>
+          }
           <InstallButton />
         </div>
       </div>

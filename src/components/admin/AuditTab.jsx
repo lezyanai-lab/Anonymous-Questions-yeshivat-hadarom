@@ -10,6 +10,7 @@ const ACTION_LABELS = {
   grant_admin: "הענקת מנהל",
   transfer_ownership: "העברת הניהול הראשי",
   revoke_admin: "ביטול מנהל",
+  toggle_rabbi_login: "שינוי כפתור כניסת רבנים",
 };
 
 function formatDate(dateStr) {

@@ -7,6 +7,7 @@ import PendingRequests from "@/components/admin/PendingRequests";
 import RabbisManagement from "@/components/admin/RabbisManagement";
 import MessagesTab from "@/components/admin/MessagesTab";
 import AuditTab from "@/components/admin/AuditTab";
+import SiteSettings from "@/components/admin/SiteSettings";
 
 const TABS = [
   { key: "pending", label: "בקשות רבנים", icon: UserCheck },
@@ -46,6 +47,7 @@ export default function AdminDashboard() {
             <span className="font-semibold text-foreground break-all">{ownerEmail}</span>
           </div>
         )}
+        <SiteSettings onChanged={refresh} />
         <div className="flex gap-2 overflow-x-auto pb-2 mb-5 -mx-4 px-4 sm:mx-0 sm:px-0">
           {TABS.map(({ key, label, icon: Icon }) => (
             <button key={key} onClick={() => setTab(key)}

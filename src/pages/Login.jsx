@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Loader2, LogIn } from "lucide-react";
@@ -14,11 +14,16 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [mode, setMode] = useState("login");
+  const [modeState, setMode] = useState("login");
+  const [searchParams] = useSearchParams();
+  // כניסת מנהל (מגיעים אליה מהמסך הראשי): כניסה בלבד, ללא הרשמה, ומיד לאזור הניהול
+  const isAdminLogin = searchParams.get("mode") === "admin";
+  const mode = isAdminLogin ? "login" : modeState;
+  const homePath = isAdminLogin ? "admin" : "rabbi";
 
   // משתמש שכבר מחובר — הפניה לאזור שלו
   if (authChecked && !isLoadingAuth && isAuthenticated && user) {
-    return <Navigate to="/rabbi" replace />;
+    return <Navigate to={`/${homePath}`} replace />;
   }
 
   const handleLogin = async (e) => {
@@ -30,7 +35,7 @@ export default function Login() {
     try {
       if (mode === "register") await base44.auth.register({ email, password, name: name.trim() });
       else await base44.auth.loginWithPassword(email, password);
-      window.location.href = `${import.meta.env.BASE_URL}rabbi`;
+      window.location.href = `${import.meta.env.BASE_URL}${homePath}`;
     } catch (err) {
       setError(err?.message || "הכניסה נכשלה, נא לנסות שוב");
       setLoading(false);
@@ -41,7 +46,7 @@ export default function Login() {
     <AuthLayout
       icon={BookOpen}
       title="ישיבת הדרום"
-      subtitle="כניסת רבנים"
+      subtitle={isAdminLogin ? "כניסת מנהל" : "כניסת רבנים"}
       footer={
         <Link to="/" className="text-primary font-medium hover:underline">
           חזרה למסך התלמידים
@@ -50,7 +55,9 @@ export default function Login() {
     >
       <div className="text-center mb-6">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          {mode === "login"
+          {isAdminLogin
+            ? "כניסת מנהל עם המייל והסיסמה של חשבון הניהול."
+            : mode === "login"
             ? "כניסה לרבנים עם המייל והסיסמה שלך."
             : "רב חדש? נרשמים עם מייל וסיסמה לבחירתך. אחרי ההרשמה יש לבקש גישה, והמנהל יאשר."}
         </p>
@@ -107,13 +114,15 @@ export default function Login() {
         </Button>
       </form>
 
-      <button
-        type="button"
-        onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
-        className="mt-4 w-full text-center text-sm text-primary font-medium hover:underline"
-      >
-        {mode === "login" ? "רב חדש? הרשמה" : "יש לי כבר חשבון — כניסה"}
-      </button>
+      {!isAdminLogin && (
+        <button
+          type="button"
+          onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
+          className="mt-4 w-full text-center text-sm text-primary font-medium hover:underline"
+        >
+          {mode === "login" ? "רב חדש? הרשמה" : "יש לי כבר חשבון — כניסה"}
+        </button>
+      )}
 
       <div className="mt-6 space-y-3">
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
