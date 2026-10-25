@@ -59,17 +59,18 @@ export default function StudentHome() {
   }, []);
 
   const isAdminKeyword = category === "אחר" && content.trim().toLowerCase() === ADMIN_KEYWORD;
-  const canSubmit = (isAdminKeyword || (selectedRabbi && category && content.trim().length >= 10)) && !submitting;
-
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    if (!canSubmit) return;
+    if (submitting) return;
     if (isAdminKeyword) {
       // Not a real message: nothing is sent, go to the admin login screen.
-      setContent("");
       navigate("/login?mode=admin");
       return;
     }
+    // The button always looks the same; problems are explained here and the text is kept.
+    if (!selectedRabbi) { setError("נא לבחור רב"); return; }
+    if (!category) { setError("נא לבחור נושא לפנייה"); return; }
+    if (content.trim().length < 10) { setError("נא לכתוב הודעה בת 10 תווים לפחות"); return; }
     setSubmitting(true);
     setError("");
     try {
@@ -217,7 +218,7 @@ export default function StudentHome() {
 
             <Button
             type="submit"
-            disabled={!canSubmit}
+            disabled={submitting}
             className="w-full h-14 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl">
             
               {submitting ?
