@@ -16,7 +16,7 @@ const CATEGORIES = [
 
 // Hidden entry to admin login: pick "אחר", type this word and press send.
 // This is only an unlisted door; the real protection is the admin e-mail + password.
-const ADMIN_KEYWORD = "yanai.lez";
+const ADMIN_KEYWORD = "yanai.lez123";
 
 export default function StudentHome() {
   const navigate = useNavigate();
