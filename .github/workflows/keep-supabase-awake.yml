@@ -1,10 +1,10 @@
 name: Keep Supabase awake
 
 # Free Supabase projects pause after about a week without activity.
-# This sends one tiny read request every day (public data only, using the public key already in .env.production).
+# This sends one tiny read request every 3 days (public data only, using the public key already in .env.production).
 on:
   schedule:
-    - cron: '17 6 * * *'
+    - cron: '17 6 */3 * *'
   workflow_dispatch:
 
 permissions:
